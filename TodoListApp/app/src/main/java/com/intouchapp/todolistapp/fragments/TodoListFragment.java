@@ -1,19 +1,19 @@
 package com.intouchapp.todolistapp.fragments;
 
 import android.app.Fragment;
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ListView;
 
 import com.intouchapp.todolistapp.R;
-import com.intouchapp.todolistapp.database.DbConfig;
-import com.intouchapp.todolistapp.database.DbHelper;
-import com.intouchapp.todolistapp.miscell.Constants;
+import com.intouchapp.todolistapp.database.DbManager;
+import com.intouchapp.todolistapp.models.TodoItem;
+
+import java.util.ArrayList;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -23,10 +23,18 @@ import de.keyboardsurfer.android.widget.crouton.Style;
  */
 public class TodoListFragment extends Fragment {
 
+    private DbManager mDbManager;
+
     private EditText mTodoData;
     private View mAdd;
+    private ListView mTodoList;
+    private ArrayList<TodoItem> items;
 
-    public TodoListFragment() {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mDbManager = new DbManager(getActivity());
     }
 
     @Override
@@ -42,8 +50,17 @@ public class TodoListFragment extends Fragment {
 
         mTodoData = (EditText) view.findViewById(R.id.todo_data);
         mAdd = view.findViewById(R.id.btn_add);
+        mTodoList = (ListView) view.findViewById(R.id.todo_list);
 
+        listItems();
         initOnAddClick();
+    }
+
+    /**
+     * Lists the items in the already saved to-do items
+     */
+    private void listItems() {
+        ArrayList<TodoItem> todoItems = getItems();
     }
 
     private void initOnAddClick() {
@@ -58,18 +75,16 @@ public class TodoListFragment extends Fragment {
     }
 
     private void addItem() {
-        if(mTodoData.getText() == null || TextUtils.isEmpty(mTodoData.getText().toString())) {
+        if (mTodoData.getText() == null || TextUtils.isEmpty(mTodoData.getText().toString())) {
             Crouton.makeText(getActivity(), getActivity().getString(R.string.message_item_not_empty), Style.INFO).show();
             return;
         }
 
-        String todoItem = mTodoData.getText().toString();
+        String todoText = mTodoData.getText().toString();
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(DbConfig.COL_DATA, todoItem);
-        long rowId = DbHelper.getInstance(getActivity()).insert(DbConfig.TABLE_TODO, contentValues);
+        long rowId = mDbManager.insert(new TodoItem(todoText));
 
-        if(rowId == -1) {
+        if (rowId == -1) {
             // some issue in adding item.
             Crouton.makeText(getActivity(), getActivity().getString(R.string.add_item_failed), Style.ALERT).show();
         } else {
@@ -77,5 +92,9 @@ public class TodoListFragment extends Fragment {
             mTodoData.setText(null);
             Crouton.makeText(getActivity(), getActivity().getString(R.string.add_item_success), Style.INFO).show();
         }
+    }
+
+    public ArrayList<TodoItem> getItems() {
+        return mDbManager.getItems();
     }
 }

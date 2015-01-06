@@ -13,7 +13,7 @@ import android.util.Log;
  * @author Niket
  */
 
-public class DbHelper extends SQLiteOpenHelper {
+class DbHelper extends SQLiteOpenHelper {
 
     private static DbHelper _instance;
     private static final String TAG = DbHelper.class.getSimpleName();
