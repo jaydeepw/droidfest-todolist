@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.intouchapp.todolistapp.R;
+import com.intouchapp.todolistapp.adapters.TodoListAdapter;
 import com.intouchapp.todolistapp.database.DbManager;
 import com.intouchapp.todolistapp.models.TodoItem;
 
@@ -61,6 +62,8 @@ public class TodoListFragment extends Fragment {
      */
     private void listItems() {
         ArrayList<TodoItem> todoItems = getItems();
+        TodoListAdapter adapter = new TodoListAdapter(getActivity(), R.layout.list_item, todoItems);
+        mTodoList.setAdapter(adapter);
     }
 
     private void initOnAddClick() {

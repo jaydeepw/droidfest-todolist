@@ -27,7 +27,11 @@ public class DbManager {
     }
 
     public ArrayList<TodoItem> getItems() {
-        Cursor cursor = DbHelper.getInstance(mContext).execSQL("select * from " + DbConfig.TABLE_TODO, null);
+        // example of a raw query.
+        // Cursor cursor = DbHelper.getInstance(mContext).execSQL("select * from " + DbConfig.TABLE_TODO, null);
+
+        // alternatively you are also query as below.
+        Cursor cursor = DbHelper.getInstance(mContext).select(DbConfig.TABLE_TODO, null, null, null, null, null, null);
 
         if (cursor == null || cursor.getCount() == 0) {
             return null;
