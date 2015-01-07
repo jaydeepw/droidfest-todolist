@@ -46,4 +46,12 @@ public class DbManager {
 
         return items;
     }
+
+    /**
+     * Removes all the items from the table
+     * @return Number of rows affected.
+     */
+    public int removeAll() {
+        return DbHelper.getInstance(mContext).delete(DbConfig.TABLE_TODO, null, null);
+    }
 }
