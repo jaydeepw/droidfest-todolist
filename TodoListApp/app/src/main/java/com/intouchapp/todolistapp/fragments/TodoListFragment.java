@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -29,7 +30,6 @@ public class TodoListFragment extends Fragment {
     private EditText mTodoData;
     private View mAdd;
     private ListView mTodoList;
-    private ArrayList<TodoItem> items;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,8 +84,8 @@ public class TodoListFragment extends Fragment {
         }
 
         String todoText = mTodoData.getText().toString();
-
-        long rowId = mDbManager.insert(new TodoItem(todoText));
+        TodoItem todoItem = new TodoItem(todoText);
+        long rowId = mDbManager.insert(todoItem);
 
         if (rowId == -1) {
             // some issue in adding item.
@@ -94,6 +94,8 @@ public class TodoListFragment extends Fragment {
             // successfully added
             mTodoData.setText(null);
             Crouton.makeText(getActivity(), getActivity().getString(R.string.add_item_success), Style.INFO).show();
+            ((ArrayAdapter) mTodoList.getAdapter()).insert(todoItem, 0);    // add the item to the top of the list
+            mTodoList.deferNotifyDataSetChanged();      // update the UI.
         }
     }
 
