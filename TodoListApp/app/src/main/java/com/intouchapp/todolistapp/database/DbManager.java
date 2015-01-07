@@ -9,7 +9,7 @@ import com.intouchapp.todolistapp.models.TodoItem;
 import java.util.ArrayList;
 
 /**
- * Created by jay on 06/01/15.
+ * Created by jay on 01/01/15.
  */
 public class DbManager {
 
@@ -40,8 +40,11 @@ public class DbManager {
         ArrayList<TodoItem> items = new ArrayList<TodoItem>();
 
         while (cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex(DbConfig.COL_ID));
             String todoText = cursor.getString(cursor.getColumnIndex(DbConfig.COL_DATA));
-            items.add(new TodoItem(todoText));
+            TodoItem todoItem = new TodoItem(todoText);
+            todoItem.setId(id);
+            items.add(todoItem);
         }   // end while
 
         return items;
@@ -49,6 +52,7 @@ public class DbManager {
 
     /**
      * Removes all the items from the table
+     *
      * @return Number of rows affected.
      */
     public int removeAll() {

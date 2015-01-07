@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.intouchapp.todolistapp.R;
@@ -18,12 +19,16 @@ import java.util.ArrayList;
  */
 public class TodoListAdapter extends ArrayAdapter<TodoItem> {
 
-    public TodoListAdapter(Context context, int textViewResourceId, ArrayList<TodoItem> todoItems) {
+    private View.OnClickListener mOnItemDeleteListener;
+
+    public TodoListAdapter(Context context, int textViewResourceId, ArrayList<TodoItem> todoItems, View.OnClickListener onItemDeleteListener) {
         super(context, textViewResourceId, todoItems);
+        mOnItemDeleteListener = onItemDeleteListener;
     }
 
     private static class ViewHolder {
         TextView mTodoText;
+        ImageView mDeleteItem;
     }
 
     @Override
@@ -35,12 +40,14 @@ public class TodoListAdapter extends ArrayAdapter<TodoItem> {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
             holder.mTodoText = (TextView) convertView.findViewById(R.id.todo_data);
+            holder.mDeleteItem = (ImageView) convertView.findViewById(R.id.delete_item);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
         holder.mTodoText.setText(todoItem.getTodoText());
+        holder.mDeleteItem.setOnClickListener(mOnItemDeleteListener);
 
         return convertView;
     }

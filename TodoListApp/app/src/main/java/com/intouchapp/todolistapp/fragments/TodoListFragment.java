@@ -25,7 +25,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 /**
- * Created by jay on 06/01/15.
+ * Created by jay on 01/01/15.
  */
 public class TodoListFragment extends Fragment {
 
@@ -62,6 +62,13 @@ public class TodoListFragment extends Fragment {
         initOnAddClick();
     }
 
+    private View.OnClickListener mOnItemDeleteListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // TODO: delete item from here.
+        }
+    };
+
     /**
      * Lists the items in the already saved to-do items
      */
@@ -72,7 +79,7 @@ public class TodoListFragment extends Fragment {
             TextView tv = (TextView) getView().findViewById(R.id.empty_view);
             mTodoList.setEmptyView(tv);
         } else {
-            TodoListAdapter adapter = new TodoListAdapter(getActivity(), R.layout.list_item, todoItems);
+            TodoListAdapter adapter = new TodoListAdapter(getActivity(), R.layout.list_item, todoItems, mOnItemDeleteListener);
             mTodoList.setAdapter(adapter);
         }
     }
@@ -100,6 +107,7 @@ public class TodoListFragment extends Fragment {
         String todoText = mTodoData.getText().toString();
         TodoItem todoItem = new TodoItem(todoText);
         long rowId = mDbManager.insert(todoItem);
+        todoItem.setId((int) rowId);
 
         if (rowId == -1) {
             // some issue in adding item.
