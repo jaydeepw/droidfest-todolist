@@ -1,7 +1,6 @@
 package com.intouchapp.todolistapp.adapters;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +46,9 @@ public class TodoListAdapter extends ArrayAdapter<TodoItem> {
         }
 
         holder.mTodoText.setText(todoItem.getTodoText());
+
         holder.mDeleteItem.setOnClickListener(mOnItemDeleteListener);
+        holder.mDeleteItem.setTag(todoItem);    // required to be retrieved when this view is clicked.
 
         return convertView;
     }

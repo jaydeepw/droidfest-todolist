@@ -3,6 +3,7 @@ package com.intouchapp.todolistapp.fragments;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +29,8 @@ import de.keyboardsurfer.android.widget.crouton.Style;
  * Created by jay on 01/01/15.
  */
 public class TodoListFragment extends Fragment {
+
+    private static final String TAG = TodoListFragment.class.getSimpleName();
 
     private DbManager mDbManager;
 
@@ -65,9 +68,33 @@ public class TodoListFragment extends Fragment {
     private View.OnClickListener mOnItemDeleteListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // TODO: delete item from here.
+            Object tag = v.getTag();
+
+            if (tag instanceof TodoItem) {
+                TodoItem todoItem = (TodoItem) tag;
+                removeItem(todoItem);
+            } else {
+                Log.w(TAG, " Unexpected tag found. Expected " + TodoItem.class.getSimpleName() + " Found: " + tag.getClass());
+            }
+
         }
     };
+
+    private void removeItem(TodoItem todoItem) {
+        long rowsAffected  = mDbManager.removeItem(todoItem.getId());
+        if(rowsAffected == -1) {
+            Crouton.makeText(getActivity(), getActivity().getString(R.string.remove_item_failed), Style.ALERT).show();
+        } else {
+            Crouton.makeText(getActivity(), getActivity().getString(R.string.remove_item_success), Style.INFO).show();
+            ((ArrayAdapter) mTodoList.getAdapter()).remove(todoItem);            // remove the item to the list
+            ((ArrayAdapter) mTodoList.getAdapter()).notifyDataSetChanged();      // update the UI.
+
+            // show empty listview if there are no more items to be displayed.
+            if(mTodoList.getAdapter().getCount() == 0) {
+                listItems();
+            }
+        }
+    }
 
     /**
      * Lists the items in the already saved to-do items

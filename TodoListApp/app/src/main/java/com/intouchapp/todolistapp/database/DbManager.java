@@ -58,4 +58,10 @@ public class DbManager {
     public int removeAll() {
         return DbHelper.getInstance(mContext).delete(DbConfig.TABLE_TODO, null, null);
     }
+
+    public long removeItem(int id) {
+        String whereClause = DbConfig.COL_ID + "=?";
+        String[] whereArgs = new String[]{Integer.toString(id)};
+        return DbHelper.getInstance(mContext).delete(DbConfig.TABLE_TODO, whereClause, whereArgs);
+    }
 }
