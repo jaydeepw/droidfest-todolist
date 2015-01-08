@@ -1,6 +1,7 @@
 package com.intouchapp.todolistapp.fragments;
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import nl.changer.android.opensource.Utils;
 
 /**
  * Created by jay on 01/01/15.
@@ -72,7 +74,7 @@ public class TodoListFragment extends Fragment {
 
             if (tag instanceof TodoItem) {
                 TodoItem todoItem = (TodoItem) tag;
-                removeItem(todoItem);
+                confirmRemoval(todoItem);
             } else {
                 Log.w(TAG, " Unexpected tag found. Expected " + TodoItem.class.getSimpleName() + " Found: " + tag.getClass());
             }
@@ -80,9 +82,32 @@ public class TodoListFragment extends Fragment {
         }
     };
 
+    private void confirmRemoval(final TodoItem todoItem) {
+        DialogInterface.OnClickListener yesClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                removeItem(todoItem);
+            }
+        };
+
+        DialogInterface.OnClickListener noClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        };
+
+        Utils.showConfirmDialog(getActivity(), getActivity().getString(R.string.confirm_remove_item),
+                yesClickListener, noClickListener);
+    }
+
+    /**
+     * Removes the item from the table in the database and updates the UI
+     * @param todoItem
+     */
     private void removeItem(TodoItem todoItem) {
-        long rowsAffected  = mDbManager.removeItem(todoItem.getId());
-        if(rowsAffected == -1) {
+        long rowsAffected = mDbManager.removeItem(todoItem.getId());
+        if (rowsAffected == -1) {
             Crouton.makeText(getActivity(), getActivity().getString(R.string.remove_item_failed), Style.ALERT).show();
         } else {
             Crouton.makeText(getActivity(), getActivity().getString(R.string.remove_item_success), Style.INFO).show();
@@ -90,7 +115,7 @@ public class TodoListFragment extends Fragment {
             ((ArrayAdapter) mTodoList.getAdapter()).notifyDataSetChanged();      // update the UI.
 
             // show empty listview if there are no more items to be displayed.
-            if(mTodoList.getAdapter().getCount() == 0) {
+            if (mTodoList.getAdapter().getCount() == 0) {
                 listItems();
             }
         }
