@@ -3,6 +3,7 @@ package com.intouchapp.todolistapp.fragments;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -103,9 +104,10 @@ public class TodoListFragment extends Fragment {
 
     /**
      * Removes the item from the table in the database and updates the UI
+     *
      * @param todoItem
      */
-    private void removeItem(TodoItem todoItem) {
+    private void removeItem(@NonNull TodoItem todoItem) {
         long rowsAffected = mDbManager.removeItem(todoItem.getId());
         if (rowsAffected == -1) {
             Crouton.makeText(getActivity(), getActivity().getString(R.string.remove_item_failed), Style.ALERT).show();

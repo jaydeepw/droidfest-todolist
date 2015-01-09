@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">TodoListApp</string>
-    <string name="hello_world">Hello world!</string>
     <string name="clear_list">Clear list</string>
     <string name="todo_item">Enter todo item</string>
     <string name="label_add">Add</string>

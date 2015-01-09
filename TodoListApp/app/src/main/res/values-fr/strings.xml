@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TodoListApp</string>
+    <string name="clear_list">Effacer la liste</string>
+    <string name="todo_item">Entrez todo article</string>
+    <string name="label_add">ajouter</string>
+    <string name="add_item_success">article ajouté</string>
+    <string name="add_item_failed">Impossible d'ajouter l'article</string>
+    <string name="message_item_not_empty">Todo article ne peut pas être vide!</string>
+    <string name="message_remove_all_failed">Impossible de supprimer tous les éléments de la liste</string>
+    <string name="remove_item_success">Point retiré Français</string>
+    <string name="remove_item_failed">Erreur élément de suppression</string>
+    <string name="confirm_remove_item">Êtes-vous sûr de vouloir supprimer cet article?</string>
+
+</resources>

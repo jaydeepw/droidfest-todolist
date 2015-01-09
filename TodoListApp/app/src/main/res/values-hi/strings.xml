@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TodoListApp</string>
+    <string name="clear_list">सूची साफ</string>
+    <string name="todo_item">टूडू मद दर्ज</string>
+    <string name="label_add">जोड़ना</string>
+    <string name="add_item_success">आइटम जोड़ा</string>
+    <string name="add_item_failed">आइटम जोड़ने में विफल</string>
+    <string name="message_item_not_empty">तोदो मद खाली नहीं हो सकता!</string>
+    <string name="message_remove_all_failed">सूची में सभी आइटम को दूर करने में विफल</string>
+    <string name="remove_item_success">आइटम हटा</string>
+    <string name="remove_item_failed">त्रुटि आयटम</string>
+    <string name="confirm_remove_item">आप इस मद को दूर करना चाहते हैं आप यकीन कर रहे हैं?</string>
+
+</resources>
